@@ -74,7 +74,7 @@ public class CustomerRoute extends RouteBuilder {
 
 		from("file:" + inputDir + "?noop=true&include=.*\\.xml").to("file:" + outputDir).to("direct:parseXML");
 		from("direct:parseXML").unmarshal(xmlFormal)
-				.to("bean:customerService?method=addCustomer")/* .to("direct:sendXML") */;
+				.to("bean:customerService?method=addCustomer").to("direct:sendXML");
 		from("direct:sendXML").marshal().json(JsonLibrary.Jackson,
 		 Customer.class).to("rabbitmq:A?routingKey=B");
 
