@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="ISO-8859-1">
+
+<title>Main Page</title>
+
+</head>
+
+<body ng-app="demo">
+	<div ng-controller="UIController"
+		style="padding: 10px; background-color: #FAFAFA;">
+
+		<div id="header">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#cust">Customer</a></li>
+				<li><a data-toggle="tab" href="#acc" id="accTabPil">Account</a></li>
+				<li><a data-toggle="tab" href="#usr">User Stat</a></li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div id="cust" class="tab-pane fade in active">
+				<h3>Customer Management</h3>
+				<hr />
+				<form>
+					<div ng-show="!showAdd || showAdd == 'search'">
+						<div style="display: inline-table; width: 80%;">
+							Name : <input type="text" ng-model="searchCustName"
+								style="width: 70%;" />
+						</div>
+						<div style="display: inline-table; width: 18%;">
+							<button type="button" class="btn btn-primary"
+								ng-click="searchCust();">
+								<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search
+							</button>
+							<button type="button" class="btn btn-primary"
+								ng-click="showAdd = 'add'">
+								<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add
+								New
+							</button>
+						</div>
+
+						<div style="padding-top: 20px;">
+							Search Result -
+							<hr style="margin: 0;" />
+						</div>
+
+						<div style="display: inline-table; width: 80%;"
+							ng-show="custList && custList.length > 0">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Customer Name</th>
+										<th>Age</th>
+										<th>Gender</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="customer in custList">
+										<td>{{customer.name}}</td>
+										<td>{{customer.age}}</td>
+										<td>{{customer.gender}}</td>
+										<td><a data-toggle="tab" href="#acc"><button type="button" class="btn btn-primary"  
+												ng-click="showAccount(customer);">
+												<span class="glyphicon glyphiconEdit"></span>
+											</button></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div ng-show="showAdd == 'add'">
+						<div style="display: inline-table; width: 80%;">
+							<div style="display: inline-table; width: 25%;">
+								Name : <input type="text" ng-model="addCust.name"
+									style="width: 70%;" />
+							</div>
+
+							<div style="display: inline-table; width: 25%;">
+								Age : <input type="number" ng-model="addCust.age"
+									style="width: 70%;" />
+							</div>
+
+							<div style="display: inline-table; width: 25%;">
+								Gender : <select ng-model="addCust.gender" style="width: 70%;">
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+							</div>
+
+							<div
+								style="display: inline-table; width: 100%; padding-top: 10px;">
+								Accounts -
+								<hr style="margin: 0;" />
+								<div style="display: inline-table; width: 100%;"
+									ng-repeat="acc in addCust.account">
+									<div style="display: inline-table; width: 25%;">
+										Number : <input type="text" ng-model="acc.number"
+											style="width: 70%;" />
+									</div>
+									<div style="display: inline-table; width: 25%;">
+										Balance : <input type="text" ng-model="acc.balance"
+											style="width: 70%;" />
+									</div>
+									<div style="display: inline-table; width: 25%;"
+										ng-if="$index == addCust.accounts.length -1">
+										<button type="button" class="btn btn-primary"
+											ng-click="addAcc();">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+
+										<button type="button" class="btn btn-primary"
+											ng-click="delAcc();" ng-if="addCust.accounts.length > 1">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div style="display: inline-table; width: 18%;">
+							<button type="button" class="btn btn-primary"
+								ng-click="showAdd = 'search'">
+								<span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Back
+							</button>
+							<button type="button" class="btn btn-primary"
+								ng-click="saveCust();">
+								<span class="glyphicon glyphicon-save"></span>&nbsp;&nbsp;Save
+							</button>
+
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+			<div id="acc" class="tab-pane fade">
+				<h3>Account Management</h3>
+				<hr />
+				<form>
+					<div>
+						<div style="display: inline-table; width: 80%;">
+							Number : <input type="text" ng-model="searchAccNum"
+								style="width: 70%;" />
+						</div>
+						<div style="display: inline-table; width: 18%;">
+							<button type="button" class="btn btn-primary"
+								ng-click="searchAcc();">
+								<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search
+							</button>
+						</div>
+					</div>
+					<div style="padding-top: 20px;">
+						Search Result -
+						<hr style="margin: 0;" />
+					</div>
+
+					<div style="display: inline-table; width: 80%;"
+						ng-show="accList && accList.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Account Number</th>
+									<th>Balamce</th>
+									<th>&nbsp;</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="account in accList">
+									<td>{{account.number}}</td>
+									<td>{{account.balance}}</td>
+									<td><input type="text" placeholder="Transaction Amount"
+										ng-model="account.transactionAmount"></td>
+									<td><button type="button" class="btn btn-primary"
+											ng-click="addAccBalance(account,'A');">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button> &nbsp;&nbsp;
+										<button type="button" class="btn btn-primary"
+											ng-click="addAccBalance(account,'S');">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</form>
+
+			</div>
+			<div id="usr" class="tab-pane fade">
+				<h3>User Statistics</h3>
+				<p>DEMO CONTENT -- TO BE FILLED</p>
+			</div>
+		</div>
+
+	</div>
+	<script src="https://code.angularjs.org/1.5.3/angular.min.js"></script>
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+
+
+</body>
+</html>
