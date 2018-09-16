@@ -42,6 +42,6 @@ GatewayRoter.java
 		from("direct:sendXML").marshal().json(JsonLibrary.Jackson,
 		 Customer.class).to("rabbitmq:A?routingKey=B");
     
-    
+    .
     
 
