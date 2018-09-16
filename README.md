@@ -11,6 +11,7 @@ The account service acts a consumer to the rabbitmq messages which customer serv
 Brief code samples:-
 GatewayRoter.java
 -----------------------------
+```JAVA
 //For recieving Customer json and creating xml file based on that-
 
   rest("/gateway").post("/customer/add").consumes("application/json").produces("application/json")
@@ -31,9 +32,11 @@ GatewayRoter.java
     rest("/gateway").get("/cust/{name}").type(Customer.class).param().name("name").type(RestParamType.path)
 				.dataType("String").endParam().route().serviceCall("customer/customerService/{name}")
 				.unmarshal(formatCusList).endRest();
+   ```
         
    CustomerRouter.java
    ---------------------------------
+   ```JAVA
    // for consuming xml created by gateway
    from("file:" + inputDir + "?noop=true&include=.*\\.xml").to("file:" + outputDir).to("direct:parseXML");
 		from("direct:parseXML").unmarshal(xmlFormal)
@@ -42,6 +45,6 @@ GatewayRoter.java
 		from("direct:sendXML").marshal().json(JsonLibrary.Jackson,
 		 Customer.class).to("rabbitmq:A?routingKey=B");
     
-    .
+  ```
     
 
