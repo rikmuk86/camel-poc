@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %-5level [%thread]
+				%logger{36}.%M - %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>D:/POC/logs/logFile_Account.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>D:/POC/logs/logFile_Account.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>utf-8</charset>
+			<Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %-5level [%thread]
+				%logger{36}.%M - %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="SPLIT-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>D:/POC/logs/Split_logFile_Account.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>D:/POC/logs/Split_logFile_Account.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>utf-8</charset>
+			<Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS}|%logger{36}.%M|%msg%n</Pattern>
+		</encoder>
+	</appender>
+	<logger name="SPLIT_FILE" level="INFO" additivity="false">
+		<appender-ref ref="SPLIT-FILE" />
+	</logger>
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
